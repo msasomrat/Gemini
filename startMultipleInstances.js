@@ -1,6 +1,6 @@
 const { spawn } = require('child_process');
 
-const scripts = ['index.js', 'text_image.js']; 
+const scripts = ['index.js', 'text_image_to_text.js', 'chatbot.js']; 
 
 const processes = [];
 
