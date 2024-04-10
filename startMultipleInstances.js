@@ -1,27 +1,25 @@
 const { spawn } = require('child_process');
 
-const numInstances = 3; // Number of instances to run concurrently
+const scripts = ['index.js', 'text_image.js']; 
 
-// Create an array to store the spawned processes
 const processes = [];
 
-// Start multiple instances
-for (let i = 0; i < numInstances; i++) {
-  console.log(`Starting instance ${i + 1}`);
-  const child = spawn('nodemon', ['index.js']);
+
+scripts.forEach((script, index) => {
+  console.log(`Starting instance ${index + 1} for ${script}`);
+  const child = spawn('nodemon', [script]);
 
   child.stdout.on('data', (data) => {
-    console.log(`Instance ${i + 1}: ${data}`);
+    console.log(`Instance ${index + 1} (${script}): ${data}`);
   });
 
   child.stderr.on('data', (data) => {
-    console.error(`Instance ${i + 1} error: ${data}`);
+    console.error(`Instance ${index + 1} (${script}) error: ${data}`);
   });
 
   processes.push(child);
-}
+});
 
-// Handle process exit
 process.on('SIGINT', () => {
   processes.forEach((child) => {
     child.kill('SIGINT');
